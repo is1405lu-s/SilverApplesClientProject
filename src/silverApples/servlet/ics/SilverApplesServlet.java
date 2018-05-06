@@ -2,7 +2,10 @@ package silverApples.servlet.ics;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -17,9 +20,6 @@ import silverApples.ejb.ics.AttendingId;
 import silverApples.ejb.ics.Customer;
 import silverApples.ejb.ics.Event;
 import silverApples.facade.ics.FacadeLocal;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @WebServlet("/SilverApplesServlet")
 public class SilverApplesServlet extends HttpServlet {
@@ -68,32 +68,90 @@ public class SilverApplesServlet extends HttpServlet {
 		} else if (operation.equals("searchcustomer")) {
 			System.out.println("SilverApplesServlet-searchcustomer");
 			url = "/SearchCustomer.jsp";
+		} else if (operation.equals("ajax_createcustomer")) {
+			String cPnr = request.getParameter("cPnr");
+			String cName = request.getParameter("cName");
+			String cAddress = request.getParameter("cAddress");
+			String cPhoneNo = request.getParameter("cPhoneNo");
+			String cEmail = request.getParameter("cEmail");
+			Customer cust = facade.findCustomer(cPnr);
+			if (cust == null) {
+				Customer c = new Customer();
+				c.setCPnr(cPnr);
+				c.setCName(cName);
+				c.setCAddress(cAddress);
+				c.setCPhone(cPhoneNo);
+				c.setCMail(cEmail);
+				facade.createCustomer(c);
+			}
+			else {
+				System.out.println("Finns redan");				
+			}
+			ajax = true;
 		} else if (operation.equals("ajax_findcustomer")) { // Ajax skickas data med response inte dispatch
-			String id = request.getParameter("cPnr");
-			Customer c = facade.findCustomer(id);
+			String cPnr = request.getParameter("cPnr");
+			Customer c = facade.findCustomer(cPnr);
 			if (c != null) {
-				Gson gson = new GsonBuilder().setPrettyPrinting().create();
+				//Gson gson = new GsonBuilder().setPrettyPrinting().create();
 				
-				String json = gson.toJson(c);
-				System.out.println(json);
+				//String json = gson.toJson(c);
+				//System.out.println(json);
 				
-				/*
-				ArrayList<String> list = new ArrayList<String>();
+				
+				ArrayList<Object> list = new ArrayList<Object>();
 				list.add("\"" + c.getCName() + "\"");
 				list.add("\"" +c.getCAddress() + "\"");
 				list.add("\"" +c.getCPhone() + "\"");
 				list.add("\"" +c.getCMail() + "\"");
 
+				ArrayList<Object> attendingList = new ArrayList<Object>();
+				c.getAttendingList().forEach(attending -> {
+					attendingList.add("\"" + attending.getEvent().getEName() + "\"");
+					attendingList.add("\"" + attending.getEvent().getEDate() + "\"");
+					attendingList.add("\"" + attending.getEvent().getEPrice() + "\"");
+				});
+				
+				list.add(attendingList);
+				
+				ArrayList<Object> attendedList = new ArrayList<Object>();
+				c.getAttendedList().forEach(attended -> {
+					attendedList.add("\"" + attended.getEvent().getEName() + "\"");
+					attendedList.add("\"" + attended.getEvent().getEDate() + "\"");
+					attendedList.add("\"" + attended.getEvent().getEPrice() + "\"");
+				});
+				
+				list.add(attendedList);
+
+				/*
+				ArrayList<String> eventList = new ArrayList<String>();
+				list.add(c.getAttendingList());
+				*/
+				
 				out.println(list);
-				//out.println(c.getCName());
-				//out.println(c.getCAddress());
-				//out.println(c.getCPhone());
-				//out.println(c.getCMail());
-				 * 
-				 */
+				
+
 			} else {
 				System.out.println("Customer not exists.");
 			}
+			out.close();
+			ajax = true;
+		} else if (operation.equals("ajax_deletecustomer")) {
+			String cPnr = request.getParameter("cPnr");
+			Customer c = facade.findCustomer(cPnr);
+			if (c != null) {
+				facade.deleteCustomer(cPnr);
+			}
+			ajax = true;
+		} else if (operation.equals("ajax_eventcombobox")) {
+			List<Event> list = facade.findAllEvents();
+			ArrayList<String> eventList = new ArrayList<String>();
+			
+			for(int i = 0; i < list.size(); i++) {
+				eventList.add("\"" + list.get(i).getEName() + "\"");	
+			}
+			
+			out.println(eventList);
+			//System.out.println(list);
 			out.close();
 			ajax = true;
 		} else {

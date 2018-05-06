@@ -8,58 +8,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link rel="stylesheet" type="text/css" href="SilverApplesCSS.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="jQuery.js"></script>
 <script type="text/javascript" src="SilverApplesJS.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-		$(document).ready(function() {
-			$("#btnSearch").click(function() {
-			<!-- alert("OBS!") -->
-				var fnElement = $("#txtPnr"); //get textfield
-				var cPnr = fnElement.val(); //get value from textfield
-				if (cPnr == null || cPnr == "") { //value blank?
-					fnElement.attr("placeholder", "Customer id, please.");
-					return;
-				}
-				$.ajax({
-					method : "POST",
-					url : "/SilverApplesClientProject/SilverApplesServlet",
-					data : {
-						operation : "ajax_findcustomer",
-						cPnr : cPnr, 
-						cAddress: "cAddress"
-					},
-					error : ajaxReturnError,
-					success : ajaxReturn_Success
-				})
-			});
-			function ajaxReturn_Success(c, status, xhr) {								
-				var fnElement = $("#txtName");
-				var fnElement1 = $("#txtAddress");
-				
-				console.log(c);
-				var obj = JSON.parse(c);
-				console.log(obj);
-				
-				fnElement.val(obj[0]);
-				fnElement1.val(obj[1]);
-				//fnElement1.val(list.get(1));
-				
-			}
-			function ajaxReturnError(result, status, xhr) {
-				console.log("Ajax-find customer: " + status);
-			}
-		});
-	</script>
-
-<!--
-<script>
-$(document).ready(function(){
-    $("#btnSearch").click(function(){
-        $("p").slideToggle();
-    });
-});
-</script> -->
 
 <title>Customer</title>
 
@@ -100,13 +51,13 @@ $(document).ready(function(){
 						placeholder="Telefonnummer"> <input type="text"
 						name="txtEmail" id="txtEmail" maxlength="50" placeholder="Email">
 					<br> <input type="button" name="btnCreate" id="btnCreate"
-						value="Skapa"> <input type="button" name="btnDelete"
-						id="btnDelete" value="Ta bort"> <br> <label
-						id="lblAddCust">Lägg kund till Event:</label> <br> <select
-						name="comboboxEvent" id="comboboxEvent">
-						<option>Programmering</option>
-						<option>Film</option>
-					</select> <input type="button" name="btnAddEvent" id="btnAddEvent"
+						value="Skapa" onclick="console.log('test');"> <input type="button" name="btnDelete"
+						id="btnDelete" value="Ta bort"> <br> 
+						<label id="lblAddCust">Lägg kund till Event:</label> 
+						<br>
+						 <select name="comboboxEvent" id="comboboxEvent">						 
+					</select>
+					 <input type="button" name="btnAddEvent" id="btnAddEvent"
 						value="Lägg till">
 					<!-- <input name="operation" value="showcustomer" type="hidden"> -->
 
@@ -136,21 +87,6 @@ $(document).ready(function(){
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>rad1, kol1</td>
-								<td>rad1, kol2</td>
-								<td>rad1, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -166,36 +102,7 @@ $(document).ready(function(){
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>ahysfdaj</td>
-								<td>rad1, kol2</td>
-								<td>rad1, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
-							<tr>
-								<td>rad2, kol1</td>
-								<td>rad2, kol2</td>
-								<td>rad2, kol3</td>
-							</tr>
+
 						</tbody>
 					</table>
 				</div>
