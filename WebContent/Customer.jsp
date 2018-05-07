@@ -5,7 +5,7 @@
 <html>
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" charset=utf-8">
 
 <link rel="stylesheet" type="text/css" href="SilverApplesCSS.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

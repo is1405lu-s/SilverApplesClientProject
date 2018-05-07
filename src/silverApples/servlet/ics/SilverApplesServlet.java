@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import silverApples.ejb.ics.Attended;
 import silverApples.ejb.ics.Attending;
 import silverApples.ejb.ics.AttendingId;
 import silverApples.ejb.ics.Customer;
@@ -131,16 +132,17 @@ public class SilverApplesServlet extends HttpServlet {
 		} else if (operation.equals("ajax_deletecustomer")) {
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
-			facade.deleteCustomer(cPnr);
 
-			c.getAttendedList().forEach(attended -> {
-				
+			for (Attending attg: c.getAttendingList()) {
+				facade.deleteAttending(attg.getAttendingId());
 			}
 			
-			/*
-			 * foreach (Event a : c.getAttendedList())) { facade.deleteAttended(c.getCPnr(),
-			 * a.getEId); }
-			 */
+			for (Attended attd : c.getAttendedList()) {
+				facade.deleteAttended(attd.getAttendedId());
+			}
+			
+			facade.deleteCustomer(cPnr);
+
 			ajax = true;
 
 		} else if (operation.equals("ajax_eventcombobox")) {
@@ -152,7 +154,6 @@ public class SilverApplesServlet extends HttpServlet {
 			}
 
 			out.println(eventList);
-			// System.out.println(list);
 			out.close();
 			ajax = true;
 		} else if (operation.equals("ajax_addtoevent")) {

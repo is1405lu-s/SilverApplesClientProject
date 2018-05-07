@@ -7,6 +7,19 @@ $(document).ready(
 					fnElement.attr("placeholder", "Fyll i personnummer.");
 					return;
 				}
+
+				var fnElement = $("#txtName");
+				fnElement.val("");
+				var fnElement1 = $("#txtAddress");
+				fnElement1.val("");
+				var fnElement2 = $("#txtPhoneNo");
+				fnElement2.val("");
+				var fnElement3 = $("#txtEmail");
+				fnElement3.val("");
+				var fnElement4 = $("#TableFutureEvents");
+				$('#TableFutureEvents tbody > tr').remove(); //rensa tabellen, förutom headern
+				var fnElement5 = $("#TablePastEvents");
+				$('#TablePastEvents tbody > tr').remove(); //rensa tabellen, förutom headern
 				
 				$.ajax({
 					method : "POST",
@@ -39,7 +52,6 @@ $(document).ready(
 				fnElement2.val(obj[2]);
 				fnElement3.val(obj[3]);
 
-				$('#TableFutureEvents tbody > tr').remove(); //rensa tabellen, förutom headern
 				for (var i = 0; i < obj[4].length; i++) {
 					fnElement4.find('tbody').append(
 							$('<tr>').append($('<td>').append(obj[4][i++]))
@@ -47,7 +59,6 @@ $(document).ready(
 									.append($('<td>').append(obj[4][i])));
 				}
 
-				$('#TablePastEvents tbody > tr').remove();
 				for (var i = 0; i < obj[5].length; i++) {
 					fnElement5.find('tbody').append(
 							$('<tr>').append($('<td>').append(obj[5][i++]))
@@ -55,7 +66,6 @@ $(document).ready(
 									.append($('<td>').append(obj[5][i])));
 				}
 
-				console.log(obj)
 				feedback.attr("value", "Kund hittades.");
 
 			}
@@ -65,7 +75,7 @@ $(document).ready(
 			}
 
 			$("#btnCreate").click(function() {
-				
+
 				var fnElement1 = $("#txtPnr"); // get textfield
 				var cPnr = fnElement1.val(); // get value from textfield
 				var fnElement2 = $("#txtName"); // get textfield
@@ -119,27 +129,45 @@ $(document).ready(
 			}
 
 			$("#btnDelete").click(function() {
-				var fnElement = $("#txtPnr"); // get textfield
-				var cPnr = fnElement.val(); // get value from textfield
-				var feedback = $("#customerFeedback");
+				var answer = confirm("Är du säker?");
+				if (answer == true) {
+					var fnElement = $("#txtPnr"); // get textfield
+					var cPnr = fnElement.val(); // get value from textfield
+					var feedback = $("#customerFeedback");
 
-				if (cPnr == null || cPnr == "") { // value blank?
-					fnElement.attr("placeholder", "Fyll i personnummer.");
-					return;
+					if (cPnr == null || cPnr == "") { // value blank?
+						fnElement.attr("placeholder", "Fyll i personnummer.");
+						return;
+					}
+
+					$.ajax({
+						method : "POST",
+						url : "/SilverApplesClientProject/SilverApplesServlet",
+						data : {
+							operation : "ajax_deletecustomer",
+							cPnr : cPnr
+						},
+						error : ajax_deleteReturnError,
+						success : ajax_deleteReturn_Success
+					})
+				} else {
+					feedback.attr("value", "Handlingen ångrades. Inget skedde.");
 				}
-				$.ajax({
-					method : "POST",
-					url : "/SilverApplesClientProject/SilverApplesServlet",
-					data : {
-						operation : "ajax_deletecustomer",
-						cPnr : cPnr
-					},
-					error : ajax_deleteReturnError,
-					success : ajax_deleteReturn_Success
-				})
+
 			});
 
 			function ajax_deleteReturn_Success(c, status, xhr) {
+				var fnElement = $("#txtPnr")
+				fnElement.val("");
+				var fnElement1 = $("#txtName");
+				fnElemen1.val("");
+				var fnElement2 = $("#txtAddress");
+				fnElement2.val("");
+				var fnElement3 = $("#txtPhoneNo");
+				fnElement3.val("");
+				var fnElement4 = $("#txtEmail");
+				fnElement4.val("");
+				
 				var feedback = $("#customerFeedback");
 				feedback.attr("value", "Kunden togs bort.");
 
@@ -203,7 +231,7 @@ $(document).ready(
 
 			function ajax_addToEventReturn_Success(c, status, xhr) {
 				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden lades till på event.");
+				feedback.attr("value", "Kunden lades till på event. Sök på kund för att uppdatera tabellerna.");
 
 			}
 
