@@ -61,7 +61,7 @@
 						value="Lägg till">
 					<!-- <input name="operation" value="showcustomer" type="hidden"> -->
 					<br>
-					<input type="text" name="customerFeedback" id="customerFeedback" readonly="readonly">
+					<input type="text" name="customerFeedback" id="customerFeedback" readonly="readonly" style="width: 281px; ">
 				</form>
 
 			</div>

@@ -58,7 +58,7 @@ public class SilverApplesServlet extends HttpServlet {
 		// Get hidden field
 		boolean ajax = false;
 		String operation = request.getParameter("operation");
-		
+
 		if (operation.equals("showcustomer")) {
 			System.out.println("SilverApplesServlet-showcustomer");
 			String cPnr = request.getParameter("txtPnr");
@@ -75,105 +75,102 @@ public class SilverApplesServlet extends HttpServlet {
 			String cPhoneNo = request.getParameter("cPhoneNo");
 			String cEmail = request.getParameter("cEmail");
 			Customer cust = facade.findCustomer(cPnr);
-			if (cust == null) {
-				Customer c = new Customer();
-				c.setCPnr(cPnr);
-				c.setCName(cName);
-				c.setCAddress(cAddress);
-				c.setCPhone(cPhoneNo);
-				c.setCMail(cEmail);
-				facade.createCustomer(c);
-			}
-			else {
-				System.out.println("Finns redan");				
-			}
+			Customer c = new Customer();
+			c.setCPnr(cPnr);
+			c.setCName(cName);
+			c.setCAddress(cAddress);
+			c.setCPhone(cPhoneNo);
+			c.setCMail(cEmail);
+			facade.createCustomer(c);
 			ajax = true;
+
 		} else if (operation.equals("ajax_findcustomer")) { // Ajax skickas data med response inte dispatch
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
-			if (c != null) {
-				//Gson gson = new GsonBuilder().setPrettyPrinting().create();
-				
-				//String json = gson.toJson(c);
-				//System.out.println(json);
-				
-				
-				ArrayList<Object> list = new ArrayList<Object>();
-				list.add("\"" + c.getCName() + "\"");
-				list.add("\"" +c.getCAddress() + "\"");
-				list.add("\"" +c.getCPhone() + "\"");
-				list.add("\"" +c.getCMail() + "\"");
+			ArrayList<Object> list = new ArrayList<Object>();
+			list.add("\"" + c.getCName() + "\"");
+			list.add("\"" + c.getCAddress() + "\"");
+			list.add("\"" + c.getCPhone() + "\"");
+			list.add("\"" + c.getCMail() + "\"");
 
-				ArrayList<Object> attendingList = new ArrayList<Object>();
-				c.getAttendingList().forEach(attending -> {
-					attendingList.add("\"" + attending.getEvent().getEName() + "\"");
-					attendingList.add("\"" + attending.getEvent().getEDate() + "\"");
-					attendingList.add("\"" + attending.getEvent().getEPrice() + "\"");
-				});
-				
-				list.add(attendingList);
-				
-				ArrayList<Object> attendedList = new ArrayList<Object>();
-				c.getAttendedList().forEach(attended -> {
-					attendedList.add("\"" + attended.getEvent().getEName() + "\"");
-					attendedList.add("\"" + attended.getEvent().getEDate() + "\"");
-					attendedList.add("\"" + attended.getEvent().getEPrice() + "\"");
-				});
-				
-				list.add(attendedList);
+			ArrayList<Object> attendingList = new ArrayList<Object>();
+			c.getAttendingList().forEach(attending -> {
+				attendingList.add("\"" + attending.getEvent().getEName() + "\"");
 
-				/*
-				ArrayList<String> eventList = new ArrayList<String>();
-				list.add(c.getAttendingList());
-				*/
-				
-				out.println(list);
-				
+				SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+				String s = dt.format(attending.getEvent().getEDate());
+				attendingList.add("\"" + s + "\"");
 
-			} else {
-				System.out.println("Customer not exists.");
-			}
+				attendingList.add("\"" + attending.getEvent().getEPrice() + "\"");
+			});
+
+			list.add(attendingList);
+
+			ArrayList<Object> attendedList = new ArrayList<Object>();
+			c.getAttendedList().forEach(attended -> {
+				attendedList.add("\"" + attended.getEvent().getEName() + "\"");
+
+				SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm");
+				String s = dt.format(attended.getEvent().getEDate());
+
+				attendedList.add("\"" + s + "\"");
+				attendedList.add("\"" + attended.getEvent().getEPrice() + "\"");
+			});
+
+			list.add(attendedList);
+
+			/*
+			 * ArrayList<String> eventList = new ArrayList<String>();
+			 * list.add(c.getAttendingList());
+			 */
+
+			out.println(list);
+
 			out.close();
 			ajax = true;
 		} else if (operation.equals("ajax_deletecustomer")) {
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
-			if (c != null) {
-				facade.deleteCustomer(cPnr);
+			facade.deleteCustomer(cPnr);
+
+			c.getAttendedList().forEach(attended -> {
+				
 			}
+			
+			/*
+			 * foreach (Event a : c.getAttendedList())) { facade.deleteAttended(c.getCPnr(),
+			 * a.getEId); }
+			 */
 			ajax = true;
+
 		} else if (operation.equals("ajax_eventcombobox")) {
 			List<Event> list = facade.findAllEvents();
 			ArrayList<String> eventList = new ArrayList<String>();
-			
-			for(int i = 0; i < list.size(); i++) {
-				eventList.add("\"" + list.get(i).getEId() + ": "+ list.get(i).getEName() + "\"");	
+
+			for (int i = 0; i < list.size(); i++) {
+				eventList.add("\"" + list.get(i).getEId() + ": " + list.get(i).getEName() + "\"");
 			}
-			
+
 			out.println(eventList);
-			//System.out.println(list);
+			// System.out.println(list);
 			out.close();
 			ajax = true;
 		} else if (operation.equals("ajax_addtoevent")) {
 			System.out.println("SilverApplesServlet-ajax_addtoevent");
-			
+
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
 			String event = request.getParameter("event");
-			
+
 			String[] parts = event.split(": ");
 			String eId = parts[0];
-			
-			System.out.println(eId);
-			
+
 			Event e = facade.findEvent(eId);
-			
-			if (c != null && e != null) {
-				Attending attg = new Attending();
-				AttendingId attgId = new AttendingId(c.getCPnr(), e.getEId());
-				attg.setAttendingId(attgId);
-				facade.createAttending(attg);
-			}
+
+			Attending attg = new Attending();
+			AttendingId attgId = new AttendingId(c.getCPnr(), e.getEId());
+			attg.setAttendingId(attgId);
+			facade.createAttending(attg);
 
 			ajax = true;
 		} else {

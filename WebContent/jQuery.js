@@ -7,6 +7,7 @@ $(document).ready(
 					fnElement.attr("placeholder", "Fyll i personnummer.");
 					return;
 				}
+				
 				$.ajax({
 					method : "POST",
 					url : "/SilverApplesClientProject/SilverApplesServlet",
@@ -38,6 +39,7 @@ $(document).ready(
 				fnElement2.val(obj[2]);
 				fnElement3.val(obj[3]);
 
+				$('#TableFutureEvents tbody > tr').remove(); //rensa tabellen, förutom headern
 				for (var i = 0; i < obj[4].length; i++) {
 					fnElement4.find('tbody').append(
 							$('<tr>').append($('<td>').append(obj[4][i++]))
@@ -45,6 +47,7 @@ $(document).ready(
 									.append($('<td>').append(obj[4][i])));
 				}
 
+				$('#TablePastEvents tbody > tr').remove();
 				for (var i = 0; i < obj[5].length; i++) {
 					fnElement5.find('tbody').append(
 							$('<tr>').append($('<td>').append(obj[5][i++]))
@@ -57,10 +60,12 @@ $(document).ready(
 
 			}
 			function ajax_findReturnError(result, status, xhr) {
+				var feedback = $("#customerFeedback");
 				feedback.attr("value", "Kunden hittades inte.");
 			}
 
 			$("#btnCreate").click(function() {
+				
 				var fnElement1 = $("#txtPnr"); // get textfield
 				var cPnr = fnElement1.val(); // get value from textfield
 				var fnElement2 = $("#txtName"); // get textfield
@@ -105,10 +110,11 @@ $(document).ready(
 				})
 			});
 			function ajax_createReturn_Success(c, status, xhr) {
+				var feedback = $("#customerFeedback");
 				feedback.attr("value", "Kunden skapades.");
-
 			}
 			function ajax_createReturnError(result, status, xhr) {
+				var feedback = $("#customerFeedback");
 				feedback.attr("value", "Kunden kunde inte skapas.");
 			}
 
@@ -134,10 +140,12 @@ $(document).ready(
 			});
 
 			function ajax_deleteReturn_Success(c, status, xhr) {
+				var feedback = $("#customerFeedback");
 				feedback.attr("value", "Kunden togs bort.");
 
 			}
 			function ajax_deleteReturnError(result, status, xhr) {
+				var feedback = $("#customerFeedback");
 				feedback.attr("value", "Kunden kunde inte tas bort.");
 			}
 
@@ -201,8 +209,7 @@ $(document).ready(
 
 			function ajax_addToEventReturn_Error(c, status, xhr) {
 				var feedback = $("#customerFeedback");
-				feedback.attr("value",
-						"Kunden kunde inte läggas till på event.");
+				feedback.attr("value", "Kunden kunde inte läggas till på event.");
 			}
 
 		});
