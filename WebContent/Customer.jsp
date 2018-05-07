@@ -51,7 +51,7 @@
 						placeholder="Telefonnummer"> <input type="text"
 						name="txtEmail" id="txtEmail" maxlength="50" placeholder="Email">
 					<br> <input type="button" name="btnCreate" id="btnCreate"
-						value="Skapa" onclick="console.log('test');"> <input type="button" name="btnDelete"
+						value="Skapa"> <input type="button" name="btnDelete"
 						id="btnDelete" value="Ta bort"> <br> 
 						<label id="lblAddCust">Lägg kund till Event:</label> 
 						<br>
@@ -60,8 +60,8 @@
 					 <input type="button" name="btnAddEvent" id="btnAddEvent"
 						value="Lägg till">
 					<!-- <input name="operation" value="showcustomer" type="hidden"> -->
-
-
+					<br>
+					<input type="text" name="customerFeedback" id="customerFeedback" readonly="readonly">
 				</form>
 
 			</div>

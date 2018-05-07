@@ -147,12 +147,34 @@ public class SilverApplesServlet extends HttpServlet {
 			ArrayList<String> eventList = new ArrayList<String>();
 			
 			for(int i = 0; i < list.size(); i++) {
-				eventList.add("\"" + list.get(i).getEName() + "\"");	
+				eventList.add("\"" + list.get(i).getEId() + ": "+ list.get(i).getEName() + "\"");	
 			}
 			
 			out.println(eventList);
 			//System.out.println(list);
 			out.close();
+			ajax = true;
+		} else if (operation.equals("ajax_addtoevent")) {
+			System.out.println("SilverApplesServlet-ajax_addtoevent");
+			
+			String cPnr = request.getParameter("cPnr");
+			Customer c = facade.findCustomer(cPnr);
+			String event = request.getParameter("event");
+			
+			String[] parts = event.split(": ");
+			String eId = parts[0];
+			
+			System.out.println(eId);
+			
+			Event e = facade.findEvent(eId);
+			
+			if (c != null && e != null) {
+				Attending attg = new Attending();
+				AttendingId attgId = new AttendingId(c.getCPnr(), e.getEId());
+				attg.setAttendingId(attgId);
+				facade.createAttending(attg);
+			}
+
 			ajax = true;
 		} else {
 			System.out.println("asdfghjkl");

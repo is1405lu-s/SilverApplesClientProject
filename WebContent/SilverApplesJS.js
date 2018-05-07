@@ -1,4 +1,3 @@
-		function() {
 
 			function openTable(evt, tableName) {
 				var i, tabcontent, tablinks;
