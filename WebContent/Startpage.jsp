@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,6 @@
 
 <div class="topnav">
   <a class="active" href="Startpage.jsp">Startsida</a>
-  <a href="Event.jsp">Event</a>
   <a href="Customer.jsp">Kund</a>
   <a href="Support.jsp">Support</a>
   <a href="Test.jsp">Test</a>
@@ -29,7 +28,7 @@
 
   <h2 id="titleStartPage">Kommande evenemang</h2>
 
-  <div class="slideshowContainer">
+  <div class="slideshowContainer" id="leftContainer">
     <div class="mySlides1" id="firstImage">
      <img src="Image/dans1.jpg" style="width:100%">
       <h2>Dans</h2>
@@ -59,7 +58,7 @@
 
 </div>
 
-<div class="slideshowContainer">
+<div class="slideshowContainer"  id="rightContainer">
 
   <div class="mySlides2" id="firstImage">
     <img src="Image/swim1.jpg" style="width:100%">

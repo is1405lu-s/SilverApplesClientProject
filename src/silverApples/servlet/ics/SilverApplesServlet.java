@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -45,47 +44,37 @@ public class SilverApplesServlet extends HttpServlet {
 	 * }
 	 */
 
-	/*
-	 * protected void service(HttpServletRequest request, HttpServletResponse
-	 * response) throws ServletException, IOException {
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		PrintWriter out = response.getWriter();
-		response.setContentType("text/plain; charset=ISO8859-1");
+		response.setContentType("text/html; charset=utf-8");
 
 		String url = null;
-		// Get hidden field
 		boolean ajax = false;
 		String operation = request.getParameter("operation");
 
-		if (operation.equals("showcustomer")) {
-			System.out.println("SilverApplesServlet-showcustomer");
-			String cPnr = request.getParameter("txtPnr");
-			Customer c = facade.findCustomer(cPnr);
-			request.setAttribute("customer", c);
-			url = "/SearchCustomer.jsp";
-		} else if (operation.equals("searchcustomer")) {
-			System.out.println("SilverApplesServlet-searchcustomer");
-			url = "/SearchCustomer.jsp";
-		} else if (operation.equals("ajax_createcustomer")) {
+		if (operation.equals("ajax_createCustomer")) {
 			String cPnr = request.getParameter("cPnr");
+			Customer cust = facade.findCustomer(cPnr);
 			String cName = request.getParameter("cName");
 			String cAddress = request.getParameter("cAddress");
-			String cPhoneNo = request.getParameter("cPhoneNo");
-			String cEmail = request.getParameter("cEmail");
-			Customer cust = facade.findCustomer(cPnr);
-			Customer c = new Customer();
+			String cPhone = request.getParameter("cPhone");
+			String cMail = request.getParameter("cMail");
+			Customer c = new Customer(cPnr, cName, cAddress, cPhone, cMail);
+			
+			/*
 			c.setCPnr(cPnr);
 			c.setCName(cName);
 			c.setCAddress(cAddress);
-			c.setCPhone(cPhoneNo);
-			c.setCMail(cEmail);
+			c.setCPhone(cPhone);
+			c.setCMail(cMail);
+			*/
+			System.out.println(c.getCPhone());
 			facade.createCustomer(c);
 			ajax = true;
 
-		} else if (operation.equals("ajax_findcustomer")) { // Ajax skickas data med response inte dispatch
+		} else if (operation.equals("ajax_findCustomer")) { // Ajax skickas data med response inte dispatch
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
 			ArrayList<Object> list = new ArrayList<Object>();
@@ -120,16 +109,11 @@ public class SilverApplesServlet extends HttpServlet {
 
 			list.add(attendedList);
 
-			/*
-			 * ArrayList<String> eventList = new ArrayList<String>();
-			 * list.add(c.getAttendingList());
-			 */
-
 			out.println(list);
 
 			out.close();
 			ajax = true;
-		} else if (operation.equals("ajax_deletecustomer")) {
+		} else if (operation.equals("ajax_deleteCustomer")) {
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
 
@@ -145,7 +129,7 @@ public class SilverApplesServlet extends HttpServlet {
 
 			ajax = true;
 
-		} else if (operation.equals("ajax_eventcombobox")) {
+		} else if (operation.equals("ajax_eventCombobox")) {
 			List<Event> list = facade.findAllEvents();
 			ArrayList<String> eventList = new ArrayList<String>();
 
@@ -156,9 +140,7 @@ public class SilverApplesServlet extends HttpServlet {
 			out.println(eventList);
 			out.close();
 			ajax = true;
-		} else if (operation.equals("ajax_addtoevent")) {
-			System.out.println("SilverApplesServlet-ajax_addtoevent");
-
+		} else if (operation.equals("ajax_addToEvent")) {
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
 			String event = request.getParameter("event");
@@ -175,8 +157,7 @@ public class SilverApplesServlet extends HttpServlet {
 
 			ajax = true;
 		} else {
-			System.out.println("asdfghjkl");
-			url = "/SearchCustomer.jsp";
+			url = "/Startpage.jsp";
 		}
 
 		if (!ajax) {

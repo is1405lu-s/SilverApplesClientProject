@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +18,6 @@
 
 <div class="topnav">
   <a href="Startpage.jsp">Startsida</a>
-  <a href="Event.jsp">Event</a>
   <a href="Customer.jsp">Kund</a>
   <a class="active" href="Support.jsp">Support</a>
   <a href="Test.jsp">Test</a>

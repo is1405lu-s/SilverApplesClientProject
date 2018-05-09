@@ -1,142 +1,143 @@
 $(document).ready(
 		function() {
 			$("#btnSearch").click(function() {
-				var fnElement = $("#txtPnr"); // get textfield
-				var cPnr = fnElement.val(); // get value from textfield
+				var txtPnr = $("#txtPnr"); // get textfield
+				var cPnr = txtPnr.val(); // get value from textfield
 				if (cPnr == null || cPnr == "") { // value blank?
 					fnElement.attr("placeholder", "Fyll i personnummer.");
 					return;
 				}
 
-				var fnElement = $("#txtName");
-				fnElement.val("");
-				var fnElement1 = $("#txtAddress");
-				fnElement1.val("");
-				var fnElement2 = $("#txtPhoneNo");
-				fnElement2.val("");
-				var fnElement3 = $("#txtEmail");
-				fnElement3.val("");
-				var fnElement4 = $("#TableFutureEvents");
+				var txtName = $("#txtName");
+				txtName.val("");
+				var txtAddress = $("#txtAddress");
+				txtAddress.val("");
+				var txtPhone = $("#txtPhone");
+				txtPhone.val("");
+				var txtMail = $("#txtMail");
+				txtMail.val("");
+				var TableFutureEvents = $("#TableFutureEvents");
 				$('#TableFutureEvents tbody > tr').remove(); //rensa tabellen, förutom headern
-				var fnElement5 = $("#TablePastEvents");
+				var TablePastEvents = $("#TablePastEvents");
 				$('#TablePastEvents tbody > tr').remove(); //rensa tabellen, förutom headern
 				
 				$.ajax({
 					method : "POST",
 					url : "/SilverApplesClientProject/SilverApplesServlet",
 					data : {
-						operation : "ajax_findcustomer",
+						operation : "ajax_findCustomer",
 						cPnr : cPnr
 					},
-					error : ajax_findReturnError,
-					success : ajax_findReturn_Success
+					error : ajax_findCustomerError,
+					success : ajax_findCustomerSuccess
 				})
 			});
 
-			function ajax_findReturn_Success(c, status, xhr) {
+			function ajax_findCustomerSuccess(result, status, xhr) {
 
-				var fnElement = $("#txtName");
-				var fnElement1 = $("#txtAddress");
-				var fnElement2 = $("#txtPhoneNo");
-				var fnElement3 = $("#txtEmail");
-				var fnElement4 = $("#TableFutureEvents");
-				var fnElement5 = $("#TablePastEvents");
-				var feedback = $("#customerFeedback");
+				var txtName = $("#txtName");
+				var txtAddress = $("#txtAddress");
+				var txtPhone = $("#txtPhone");
+				var txtMail = $("#txtMail");
+				var TableFutureEvents = $("#TableFutureEvents");
+				var TablePastEvents = $("#TablePastEvents");
+				var txtFeedback = $("#txtFeedback");
 
-				console.log(c);
-				var obj = JSON.parse(c);
-				console.log(obj);
+				var list = JSON.parse(result);
 
-				fnElement.val(obj[0]);
-				fnElement1.val(obj[1]);
-				fnElement2.val(obj[2]);
-				fnElement3.val(obj[3]);
+				txtName.val(list[0]);
+				txtAddress.val(list[1]);
+				txtPhone.val(list[2]);
+				txtMail.val(list[3]);
 
-				for (var i = 0; i < obj[4].length; i++) {
-					fnElement4.find('tbody').append(
-							$('<tr>').append($('<td>').append(obj[4][i++]))
-									.append($('<td>').append(obj[4][i++]))
-									.append($('<td>').append(obj[4][i])));
+				for (var i = 0; i < list[4].length; i++) {
+					TableFutureEvents.find('tbody').append(
+							$('<tr>').append($('<td>').append(list[4][i++]))
+									.append($('<td>').append(list[4][i++]))
+									.append($('<td>').append(list[4][i])));
 				}
 
-				for (var i = 0; i < obj[5].length; i++) {
-					fnElement5.find('tbody').append(
-							$('<tr>').append($('<td>').append(obj[5][i++]))
-									.append($('<td>').append(obj[5][i++]))
-									.append($('<td>').append(obj[5][i])));
+				for (var i = 0; i < list[5].length; i++) {
+					TablePastEvents.find('tbody').append(
+							$('<tr>').append($('<td>').append(list[5][i++]))
+									.append($('<td>').append(list[5][i++]))
+									.append($('<td>').append(list[5][i])));
 				}
 
-				feedback.attr("value", "Kund hittades.");
+				txtFeedback.attr("value", "Kund hittades.");
 
 			}
-			function ajax_findReturnError(result, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden hittades inte.");
+			function ajax_findCustomerError(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden hittades inte.");
 			}
 
 			$("#btnCreate").click(function() {
-
-				var fnElement1 = $("#txtPnr"); // get textfield
-				var cPnr = fnElement1.val(); // get value from textfield
-				var fnElement2 = $("#txtName"); // get textfield
-				var cName = fnElement2.val(); // get value from textfield
-				var fnElement3 = $("#txtAddress"); // get textfield
-				var cAddress = fnElement3.val(); // get value from textfield
-				var fnElement4 = $("#txtPhoneNo"); // get textfield
-				var cPhoneNo = fnElement4.val(); // get value from textfield
-				var fnElement5 = $("#txtEmail"); // get textfield
-				var cEmail = fnElement4.val(); // get value from textfield
-				var feedback = $("#customerFeedback");
+				var txtPnr = $("#txtPnr"); // get textfield
+				var cPnr = txtPnr.val(); // get value from textfield
+				var txtName = $("#txtName");
+				var cName = txtName.val();
+				var txtAddress = $("#txtAddress");
+				var cAddress = txtAddress.val();
+				var txtPhone = $("#txtPhone");
+				var cPhone = txtPhone.val();
+				var txtMail = $("#txtMail");
+				var cMail = txtMail.val();
+				var txtFeedback = $("#txtFeedback");
 
 				if (cPnr == null || cPnr == "") { // value blank?
-					fnElement1.attr("placeholder", "Fyll i personnummer.");
+					txtPnr.attr("placeholder", "Fyll i personnummer."); //OBS ändra till feedback-ruta?!
 					return;
 				}
-				if (cName == null || cName == "") { // value blank?
-					fnElement2.attr("placeholder", "Fyll i namn.");
+				if (cName == null || cName == "") { 
+					txtName.attr("placeholder", "Fyll i namn.");
 					return;
 				}
-				if (cPhoneNo == null || cPhoneNo == "") { // value blank?
-					fnElement3.attr("placeholder", "Fyll i telefonnummer.");
+				if (cAddress == null || cAddress == "") { 
+					txtAddress.attr("placeholder", "Fyll i adress.");
 					return;
 				}
-				if (cEmail == null || cEmail == "") { // value blank?
-					fnElement4.attr("placeholder", "Fyll i email.");
+				if (cPhone == null || cPhone == "") { 
+					txtPhone.attr("placeholder", "Fyll i telefonnummer.");
+					return;
+				}
+				if (cMail == null || cMail == "") { 
+					txtMail.attr("placeholder", "Fyll i email.");
 					return;
 				}
 				$.ajax({
 					method : "POST",
 					url : "/SilverApplesClientProject/SilverApplesServlet",
 					data : {
-						operation : "ajax_createcustomer",
+						operation : "ajax_createCustomer",
 						"cPnr" : cPnr,
 						"cName" : cName,
 						"cAddress" : cAddress,
-						"cPhoneNo" : cPhoneNo,
-						"cEmail" : cEmail
+						"cPhone" : cPhone,
+						"cMail" : cMail
 					},
-					error : ajax_createReturnError,
-					success : ajax_createReturn_Success
+					error : ajax_createCustomerError,
+					success : ajax_createCustomerSuccess
 				})
 			});
-			function ajax_createReturn_Success(c, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden skapades.");
+			function ajax_createCustomerSuccess(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden skapades.");
 			}
-			function ajax_createReturnError(result, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden kunde inte skapas.");
+			function ajax_createCustomerError(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden kunde inte skapas.");
 			}
 
 			$("#btnDelete").click(function() {
 				var answer = confirm("Är du säker?");
 				if (answer == true) {
-					var fnElement = $("#txtPnr"); // get textfield
-					var cPnr = fnElement.val(); // get value from textfield
-					var feedback = $("#customerFeedback");
+					var txtPnr = $("#txtPnr"); // get textfield
+					var cPnr = txtPnr.val(); // get value from textfield
+					var txtFeedback = $("#txtFeedback");
 
 					if (cPnr == null || cPnr == "") { // value blank?
-						fnElement.attr("placeholder", "Fyll i personnummer.");
+						txtPnr.attr("placeholder", "Fyll i personnummer.");
 						return;
 					}
 
@@ -144,37 +145,37 @@ $(document).ready(
 						method : "POST",
 						url : "/SilverApplesClientProject/SilverApplesServlet",
 						data : {
-							operation : "ajax_deletecustomer",
+							operation : "ajax_deleteCustomer",
 							cPnr : cPnr
 						},
-						error : ajax_deleteReturnError,
-						success : ajax_deleteReturn_Success
+						error : ajax_deleteCustomerError,
+						success : ajax_deleteCustomerSuccess
 					})
-				} else {
-					feedback.attr("value", "Handlingen ångrades. Inget skedde.");
-				}
-
+				} 
 			});
 
-			function ajax_deleteReturn_Success(c, status, xhr) {
-				var fnElement = $("#txtPnr")
-				fnElement.val("");
-				var fnElement1 = $("#txtName");
-				fnElemen1.val("");
-				var fnElement2 = $("#txtAddress");
-				fnElement2.val("");
-				var fnElement3 = $("#txtPhoneNo");
-				fnElement3.val("");
-				var fnElement4 = $("#txtEmail");
-				fnElement4.val("");
+			function ajax_deleteCustomerSuccess(result, status, xhr) {
+				//tömmer alla fält
+				var txtPnr = $("#txtPnr")
+				txtPnr.val("");
+				var txtName = $("#txtName");
+				txtName.val("");
+				var txtAddress = $("#txtAddress");
+				txtAddress.val("");
+				var txtPhone = $("#txtPhone");
+				txtPhone.val("");
+				var txtMail = $("#txtMail");
+				txtMail.val("");
+				$('#TableFutureEvents tbody > tr').remove(); //rensa tabellen, förutom headern
+				$('#TablePastEvents tbody > tr').remove(); //rensa tabellen, förutom headern
 				
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden togs bort.");
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden togs bort.");
 
 			}
-			function ajax_deleteReturnError(result, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden kunde inte tas bort.");
+			function ajax_deleteCustomerError(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden kunde inte tas bort.");
 			}
 
 			$(function() {
@@ -182,62 +183,61 @@ $(document).ready(
 					method : "POST",
 					url : "/SilverApplesClientProject/SilverApplesServlet",
 					data : {
-						operation : "ajax_eventcombobox",
+						operation : "ajax_eventCombobox",
 					},
-					error : ajax_comboboxReturn_Error,
-					success : ajax_comboboxReturn_Success
+					error : ajax_eventComboboxError,
+					success : ajax_eventComboboxSuccess
 				})
 			});
 
-			function ajax_comboboxReturn_Success(c, status, xhr) {
-				var fnElement = $("#comboboxEvent");
+			function ajax_eventComboboxSuccess(result, status, xhr) {
+				var combobox = $("#comboboxEvent");
 
-				var obj = JSON.parse(c);
+				var list = JSON.parse(result);
 
-				for (var i = 0; i < obj.length; i++) {
-					fnElement.append($('<option>').append(obj[i]));
+				for (var i = 0; i < list.length; i++) {
+					combobox.append($('<option>').append(list[i]).append('</option>'));
 				}
-
 			}
 
-			function ajax_comboboxReturn_Error(c, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Comboboxen kunde inte laddas.");
+			function ajax_eventComboboxError(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Comboboxen kunde inte laddas.");
 			}
 
 			$("#btnAddEvent").click(function() {
-				var fnElement1 = $("#txtPnr"); // get textfield
-				var cPnr = fnElement1.val(); // get value from textfield
+				var txtPnr = $("#txtPnr"); // get textfield
+				var cPnr = txtPnr.val(); // get value from textfield
 				if (cPnr == null || cPnr == "") { // value blank?
-					fnElement1.attr("placeholder", "Fyll i personnummer.");
+					txtPnr.attr("placeholder", "Fyll i personnummer.");
 					return;
 				}
 
-				var fnElement2 = $("#comboboxEvent");
-				var event = fnElement2.val(); // get value from textfield
+				var combobox = $("#comboboxEvent");
+				var event = combobox.val(); // get value from textfield
 
 				$.ajax({
 					method : "POST",
 					url : "/SilverApplesClientProject/SilverApplesServlet",
 					data : {
-						operation : "ajax_addtoevent",
+						operation : "ajax_addToEvent",
 						cPnr : cPnr,
 						event : event
 					},
-					error : ajax_addToEventReturn_Error,
-					success : ajax_addToEventReturn_Success
+					error : ajax_addToEventError,
+					success : ajax_addToEventSuccess
 				})
 			});
 
-			function ajax_addToEventReturn_Success(c, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden lades till på event. Sök på kund för att uppdatera tabellerna.");
+			function ajax_addToEventSuccess(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden lades till på event. Sök på kund för att uppdatera tabellerna.");
 
 			}
 
-			function ajax_addToEventReturn_Error(c, status, xhr) {
-				var feedback = $("#customerFeedback");
-				feedback.attr("value", "Kunden kunde inte läggas till på event.");
+			function ajax_addToEventError(result, status, xhr) {
+				var txtFeedback = $("#txtFeedback");
+				txtFeedback.attr("value", "Kunden kunde inte läggas till på event.");
 			}
 
 		});
