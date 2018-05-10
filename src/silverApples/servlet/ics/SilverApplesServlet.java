@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -33,17 +34,6 @@ public class SilverApplesServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	/*
-	 * protected void doGet(HttpServletRequest request, HttpServletResponse
-	 * response) throws ServletException, IOException { // TODO Auto-generated
-	 * method stub PrintWriter out = response.getWriter();
-	 * response.getWriter().append("Served at: ").append(request.getContextPath());
-	 * response.getWriter().append("Served at: ").append(request.getServletPath());
-	 * out.println("SilverApplesServlet-doGet"); out.close();
-	 * 
-	 * }
-	 */
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -54,27 +44,7 @@ public class SilverApplesServlet extends HttpServlet {
 		boolean ajax = false;
 		String operation = request.getParameter("operation");
 
-		if (operation.equals("ajax_createCustomer")) {
-			String cPnr = request.getParameter("cPnr");
-			Customer cust = facade.findCustomer(cPnr);
-			String cName = request.getParameter("cName");
-			String cAddress = request.getParameter("cAddress");
-			String cPhone = request.getParameter("cPhone");
-			String cMail = request.getParameter("cMail");
-			Customer c = new Customer(cPnr, cName, cAddress, cPhone, cMail);
-			
-			/*
-			c.setCPnr(cPnr);
-			c.setCName(cName);
-			c.setCAddress(cAddress);
-			c.setCPhone(cPhone);
-			c.setCMail(cMail);
-			*/
-			System.out.println(c.getCPhone());
-			facade.createCustomer(c);
-			ajax = true;
-
-		} else if (operation.equals("ajax_findCustomer")) { // Ajax skickas data med response inte dispatch
+		if (operation.equals("ajax_findCustomer")) { // Ajax skickas data med response inte dispatch
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
 			ArrayList<Object> list = new ArrayList<Object>();
@@ -113,18 +83,30 @@ public class SilverApplesServlet extends HttpServlet {
 
 			out.close();
 			ajax = true;
+		} else if (operation.equals("ajax_createCustomer")) {
+			String cPnr = request.getParameter("cPnr");
+			Customer cust = facade.findCustomer(cPnr);
+			String cName = request.getParameter("cName");
+			String cAddress = request.getParameter("cAddress");
+			String cPhone = request.getParameter("cPhone");
+			String cMail = request.getParameter("cMail");
+			Customer c = new Customer(cPnr, cName, cAddress, cPhone, cMail);
+
+			facade.createCustomer(c);
+			ajax = true;
+
 		} else if (operation.equals("ajax_deleteCustomer")) {
 			String cPnr = request.getParameter("cPnr");
 			Customer c = facade.findCustomer(cPnr);
 
-			for (Attending attg: c.getAttendingList()) {
+			for (Attending attg : c.getAttendingList()) {
 				facade.deleteAttending(attg.getAttendingId());
 			}
-			
+
 			for (Attended attd : c.getAttendedList()) {
 				facade.deleteAttended(attd.getAttendedId());
 			}
-			
+
 			facade.deleteCustomer(cPnr);
 
 			ajax = true;
@@ -134,6 +116,8 @@ public class SilverApplesServlet extends HttpServlet {
 			ArrayList<String> eventList = new ArrayList<String>();
 
 			for (int i = 0; i < list.size(); i++) {
+				Date d = new Date();
+				if (list.get(i).getEDate().after(d))
 				eventList.add("\"" + list.get(i).getEId() + ": " + list.get(i).getEName() + "\"");
 			}
 

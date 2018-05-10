@@ -10,7 +10,6 @@ import silverApples.facade.ics.FacadeLocal;
 public class TestCustomer extends TestCase {
 
 	Customer c;
-	Customer b;
 	FacadeLocal facade;
 	Context context;
 	
@@ -22,8 +21,7 @@ public class TestCustomer extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		c = new Customer();
-		b = new Customer();
+		c = new Customer("100", "Flora", "Gångvägen 25", "123", "@me");
 		
 		context = new InitialContext();
 		facade = (FacadeLocal) context.lookup("java:app/SilverApplesEJBProject/Facade!silverApples.facade.ics.FacadeLocal");
@@ -31,21 +29,20 @@ public class TestCustomer extends TestCase {
 
 	public void testCreateCustomer() {
 
-		c.setCPnr("100");
-		c.setCName("q");
-		c.setCAddress("q");
-		c.setCPhone("q");
-		c.setCMail("q");
 		facade.createCustomer(c);
 		assertNotNull(c);
-		facade.deleteCustomer("100");
-		 b = facade.findCustomer("1");
-		 assertNotNull(b);
+	}
+	
+	public void testUpdateCustomer() {
+		c.setCName("Tim");
+		facade.updateCustomer(c);
+		assertEquals("Tim", c.getCName());
 	}
 	
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		facade.deleteCustomer(c.getCPnr());
 		facade = null;
 	}
-
+	
 }

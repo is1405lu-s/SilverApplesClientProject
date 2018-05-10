@@ -2,14 +2,12 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 
-<%@ page import="silverApples.ejb.ics.Customer"%>
-
 <html>
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" type="text/css" href="SilverApplesCSS.cs">
+<link rel="stylesheet" type="text/css" href="SilverApplesCSS.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="jQuery.js"></script>
 <script type="text/javascript" src="SilverApplesJS.js"></script>
@@ -56,7 +54,6 @@
 						<br>
 					<select name="comboboxEvent" id="comboboxEvent"> </select>
 					 <input type="button" name="btnAddEvent" id="btnAddEvent" value="Lägg till">
-					<!-- <input name="operation" value="showcustomer" type="hidden"> -->
 					<br>
 					<input type="text" name="txtFeedback" id="txtFeedback" readonly="readonly">
 				</form>

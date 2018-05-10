@@ -22,24 +22,26 @@ public class TestAttending extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		attg = new Attending();
-		attgId = new AttendingId();
+		attgId = new AttendingId("1", "1");
+		attg = new Attending(attgId, true);
 		
 		context = new InitialContext();
 		facade = (FacadeLocal) context.lookup("java:app/SilverApplesEJBProject/Facade!silverApples.facade.ics.FacadeLocal");
 	}
 
 	public void testCreateAttending() {
-		attgId.setCPnr("1");
-		attgId.setEId("1");
-		attg.setAttendingId(attgId);
 		facade.createAttending(attg);
 		assertNotNull(attg);
-		facade.deleteAttending(attgId);
+	}
+	
+	public void testUpdateAttending() {
+		attg.setHasPaid(false);
+		assertEquals(false, attg.getHasPaid());
 	}
 	
 	protected void tearDown() throws Exception {
 		super.tearDown();
+		facade.deleteAttending(attgId);
 		facade = null;
 	}
 

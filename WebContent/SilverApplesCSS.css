@@ -18,8 +18,8 @@ header {
 }
 
 #eventlogo {
-	width: 300px;
-	height: 130px;
+	width: 380px;
+	height: 160px;
 	padding-top: 30px;
 	padding-left: 60px;
 }
@@ -67,18 +67,6 @@ input[type=button], input[type=submit], .tablinks {
 	border: 1px solid black;
 	background-color: #f2f2f2;
 	padding: 3px 10px;
-}
-
-/* event! */
-input[type=date] {
-	padding: 0px 23px;
-	margin-bottom: 2%;
-}
-
-/* event! */
-input[type=time] {
-	margin-left: 5%;
-	padding: 0px 52px;
 }
 
 #txtPnr {
@@ -132,13 +120,11 @@ input[type=time] {
 }
 
 /* Style the buttons inside the tab */
-.tab button {
+/*.tab button */
+
+.tablinks {
 	display: inline;
-	background-color: #ffffff;
-	float: left;
-	border: 1px solid black;
 	outline: none;
-	cursor: pointer;
 	padding: 5px 12px;
 	transition: 0.3s;
 	font-size: 17px;
@@ -150,13 +136,7 @@ input[type=time] {
 .tabcontent {
 	display: none;
 	border-top: none;
-}
-
-
-.tabcontent td:nth-child(1), 
-.tabcontent td:nth-child(2), 
-.tabcontent td:nth-child(3) {
-    width: 30%;
+	text-align: center;
 }
 
 #TableFutureEvents, #TablePastEvents, #TableFutureCustomers,
@@ -171,7 +151,6 @@ table {
 
 th, td {
 	width: 200px;
-	border: 1px solid black;
 	padding: 8px;
 	font-weight: normal;
 }
@@ -186,8 +165,8 @@ thead>tr {
 
 tbody {
 	display: block;
-	height: 80px;
-	overflow-y: overlay;
+	height: 150px;
+	overflow-y: scroll;
 	overflow-x: overlay;
 }
 
@@ -257,23 +236,11 @@ footer {
 }
 
 .slideshowContainer {
-  /* float: left; */
   padding: 30px;
   display: inline-block;
   position: relative;
   margin: auto;
-  /* margin-left: 200px;
-  margin-right: 200px; */
   vertical-align: middle;
-	/*
-	float: left;
-	padding: 30px;
-	display: inline-block;
-	position: relative;
-    /* margin: auto;
- 	margin-left: 200px;
-  	margin-right: 200px;
-  	vertical-align: middle; */
 }
 
 .slideshowContainer img {

@@ -63,12 +63,14 @@ $(document).ready(
 									.append($('<td>').append(list[5][i++]))
 									.append($('<td>').append(list[5][i])));
 				}
-
+				
+				txtFeedback.css("color", "green");
 				txtFeedback.attr("value", "Kund hittades.");
 
 			}
 			function ajax_findCustomerError(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "red");
 				txtFeedback.attr("value", "Kunden hittades inte.");
 			}
 
@@ -86,23 +88,28 @@ $(document).ready(
 				var txtFeedback = $("#txtFeedback");
 
 				if (cPnr == null || cPnr == "") { // value blank?
-					txtPnr.attr("placeholder", "Fyll i personnummer."); //OBS ändra till feedback-ruta?!
+					txtFeedback.css("color", "red");
+					txtFeedback.attr("value", "Fyll i personnummer.");
 					return;
 				}
 				if (cName == null || cName == "") { 
-					txtName.attr("placeholder", "Fyll i namn.");
+					txtFeedback.css("color", "red");
+					txtFeedback.attr("value", "Fyll i namn.");
 					return;
 				}
 				if (cAddress == null || cAddress == "") { 
-					txtAddress.attr("placeholder", "Fyll i adress.");
+					txtFeedback.css("color", "red");
+					txtFeedback.attr("value", "Fyll i adress.");
 					return;
 				}
 				if (cPhone == null || cPhone == "") { 
-					txtPhone.attr("placeholder", "Fyll i telefonnummer.");
+					txtFeedback.css("color", "red");
+					txtFeedback.attr("value", "Fyll i telefonnummer.");
 					return;
 				}
 				if (cMail == null || cMail == "") { 
-					txtMail.attr("placeholder", "Fyll i email.");
+					txtFeedback.css("color", "red");
+					txtFeedback.attr("value", "Fyll i mail.");
 					return;
 				}
 				$.ajax({
@@ -122,10 +129,12 @@ $(document).ready(
 			});
 			function ajax_createCustomerSuccess(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "green");
 				txtFeedback.attr("value", "Kunden skapades.");
 			}
 			function ajax_createCustomerError(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "red");
 				txtFeedback.attr("value", "Kunden kunde inte skapas.");
 			}
 
@@ -137,7 +146,8 @@ $(document).ready(
 					var txtFeedback = $("#txtFeedback");
 
 					if (cPnr == null || cPnr == "") { // value blank?
-						txtPnr.attr("placeholder", "Fyll i personnummer.");
+						txtFeedback.css("color", "red");
+						txtFeedback.attr("value", "Fyll i personnummer.");
 						return;
 					}
 
@@ -155,7 +165,6 @@ $(document).ready(
 			});
 
 			function ajax_deleteCustomerSuccess(result, status, xhr) {
-				//tömmer alla fält
 				var txtPnr = $("#txtPnr")
 				txtPnr.val("");
 				var txtName = $("#txtName");
@@ -170,11 +179,13 @@ $(document).ready(
 				$('#TablePastEvents tbody > tr').remove(); //rensa tabellen, förutom headern
 				
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "green");
 				txtFeedback.attr("value", "Kunden togs bort.");
 
 			}
 			function ajax_deleteCustomerError(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "red");
 				txtFeedback.attr("value", "Kunden kunde inte tas bort.");
 			}
 
@@ -202,6 +213,7 @@ $(document).ready(
 
 			function ajax_eventComboboxError(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "red");
 				txtFeedback.attr("value", "Comboboxen kunde inte laddas.");
 			}
 
@@ -209,7 +221,8 @@ $(document).ready(
 				var txtPnr = $("#txtPnr"); // get textfield
 				var cPnr = txtPnr.val(); // get value from textfield
 				if (cPnr == null || cPnr == "") { // value blank?
-					txtPnr.attr("placeholder", "Fyll i personnummer.");
+					txtFeedback.css("color", "red");
+					txtFeedback.attr("value", "Fyll i personnummer.");
 					return;
 				}
 
@@ -231,12 +244,14 @@ $(document).ready(
 
 			function ajax_addToEventSuccess(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "green");
 				txtFeedback.attr("value", "Kunden lades till på event. Sök på kund för att uppdatera tabellerna.");
 
 			}
 
 			function ajax_addToEventError(result, status, xhr) {
 				var txtFeedback = $("#txtFeedback");
+				txtFeedback.css("color", "red");
 				txtFeedback.attr("value", "Kunden kunde inte läggas till på event.");
 			}
 
