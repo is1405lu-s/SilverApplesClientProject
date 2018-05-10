@@ -31,6 +31,8 @@
 <body>
 
 	<section id="main">
+	<div class="testPageContent">
+	
 		<p>
 			Här kan du välja en eller flera av följande test:<br>
 		</p>
@@ -45,6 +47,7 @@
 			</select> <input type="submit" name="btnTest" id="btnTest" value="Run" />
 		</form>
 	</section>
+	</div>
 
 	<footer>
 		<hr id="hrFooter">

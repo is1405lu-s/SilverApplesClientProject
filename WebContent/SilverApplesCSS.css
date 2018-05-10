@@ -357,3 +357,7 @@ footer {
 	background-color: white;
 	overflow: hidden;
 }
+
+.testPageContent {
+	padding: 30px;
+}
